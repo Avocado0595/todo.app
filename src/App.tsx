@@ -1,81 +1,87 @@
-import React, { createContext, useEffect, useState } from 'react'
+import React, { createContext, useContext, useEffect, useState } from 'react'
 import './App.css'
 import ITodo from './interfaces/ITodo'
 import { Box } from '@mui/system';
 import MenuAppBar from './components/navbar/MenuAppBar';
 import Input from './components/add-input/Input';
 import TodoList from './components/todo-list/TodoList';
-import {createTodos, getTodos, updateTodos} from './api/todoApi';
-export const TodoContext = createContext({handleDelete:(id:string)=>{},
-  handleCompleted:(id:string)=>{},handleEdit:(id:string)=>{}});
-function App() {
-  const [todoList, setTodoList] = useState<Array<Partial<ITodo>>>([])
-  const [newTodo, setNewTodo] = useState<Partial<ITodo>>({ id: '', title: '', completed: false });
-  const [isAdd, setIsAdd] = useState<boolean>(true);
-  const [updateId, setUpdateId] = useState<string>('');
-  useEffect(() => {
-    const getApi = async () => {
-      const data = await getTodos();
-      console.log(data);
-      setTodoList(data.data);
-    }
-    getApi();
-  }, [])
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNewTodo({title: e.target.value, completed: false });
-  }
+import { createTodos, getTodos, updateTodos } from './api/todoApi';
+import IUser from './features/user/user.interface';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Login from './pages/signin/signin.page';
+import SignUp from './pages/signup/signup.page';
+import AuthLayout from './components/auth-layout/AuthLayout';
+import Home from './pages/Home/Home';
+import { userSignUp } from './api/userApi';
+import ChatComponent from './pages/Chat/chat.component';
+import ChatPage from './message/Chat';
+import axios from 'axios';
+import { useAppDispatch } from './app/hooks';
+import SignIn from './pages/signin/signin.page';
+// export const UserContext = createContext<{ user: IUser | null }>({ user: null });
+// export const TodoContext = createContext({
+//   handleDelete: (id: string) => { },
+//   handleCompleted: (id: string) => { }, handleEdit: (id: string) => { }
+// });
+const GetTodo =()=>{
 
-  const handleAddUpdateTodo = async () => {
-    if (isAdd) {
-      if (newTodo.title?.trim() != ''){
-      const createdTodo= await createTodos({title:newTodo.title});
-      setTodoList([...todoList, createdTodo.data.data]);
-    }}
-    else {
-      if (newTodo.title?.trim() != '') {
-        setIsAdd(true);
-        const newTodoList = [...todoList];
-        const updatedTodo = await updateTodos(updateId, {title:newTodo.title});
-        newTodoList[todoList.findIndex(todo => todo.id === updateId)] = updatedTodo.data.data;
-        console.log(updatedTodo.data.data);
-        setTodoList(newTodoList);
-      }
-    }
-    setNewTodo({ id: '', title: '', completed: false });
+  // useEffect(()=>{
+  //   const data = async()=>{
+  //     const todos = await axios.get('http://localhost:5001/tasks', {withCredentials: true});
+  //     console.log(todos);
+  //     //return todos;
+  //   }
+  //   data();
+  // }
+  // );
+  return <h1>Todo</h1>
 }
+function App() {
+  // const userContext = useContext(UserContext);
+  // const [user, setUser] = useState(userContext.user);
+  // useEffect(()=>{
+  //   const getUser = async()=>{
+  //     try{
+  //       const getUserFromToken = await getToken();
+  //       console.log("token user:",getUserFromToken.data);
+  //       setUser(getUserFromToken.data);
+  //       userContext.user = getUserFromToken.data;
+  //     }
+  //     catch(err){
+  //       console.log("err")
+  //     }
+  //   }
+  //   getUser();
+  // },[])
+  // const handleLogin = (user: IUser)=>{
+  //   setUser(user);
+  // }
+  // useEffect(()=>{
+  //   const connect = async()=>{
+  //    const res = await axios.post('http://localhost:5001/auth/signin',{
+  //     username:"thanhxuan2",
+  //     password:"Th@nhXu@n123"
+  // },
+  //   { withCredentials: true }
+  // )
+  // console.log('fake connect ok!');
+  // console.log(res.headers);
+  //   }
+  //   connect();
+  // },[])
+  
 
-  const handleDelete = (id: string) => {
-    const newTodoList = [...todoList];
-    newTodoList.splice(newTodoList.findIndex(todo => todo.id === id), 1);
-    setTodoList(newTodoList);
-  }
-
-  const handleEdit = (id: string) => {
-    const oldTodo = todoList[todoList.findIndex(todo => todo.id === id)];
-    setNewTodo(oldTodo);
-    setIsAdd(false);
-    setUpdateId(id);
-  }
-  const handleCompleted = (id: string) => {
-    const newTodoList = [...todoList];
-    newTodoList[todoList.findIndex(todo => todo.id === id)].completed = !newTodoList[todoList.findIndex(todo => todo.id === id)].completed;
-    setTodoList(newTodoList);
-  }
-
+  
   return (
-    <TodoContext.Provider value={{handleDelete:handleDelete,handleCompleted:handleCompleted,handleEdit:handleEdit}}>
-    <Box sx={{ paddingTop: '10px', justifyContent: 'center', display: 'flex', flexDirection: 'column' }}>
-      <MenuAppBar />
-      <Input title={newTodo.title as string}
-        handleChange={handleChange}
-        isAdd={isAdd}
-        handleAddUpdateTodo={handleAddUpdateTodo}
-      />
-      <TodoList key="123"
-        todoList={todoList as Array<ITodo>}
-      />
-    </Box>
-    </TodoContext.Provider>
+      <BrowserRouter>
+        <Routes>
+          {/* <Route path="/" element={user? <Home /> :<AuthLayout><Login handleLogin={handleLogin}/></AuthLayout>}></Route> */}
+          <Route path="/" element={<GetTodo />}></Route>
+          <Route path="/chat" element={ <ChatPage />}></Route>
+          <Route path="/signup" element={<SignUp/>}></Route>
+          <Route path="/signin" element={<SignIn/>}></Route>
+        </Routes>
+      </BrowserRouter>
   )
 
 }

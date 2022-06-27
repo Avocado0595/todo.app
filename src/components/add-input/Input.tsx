@@ -8,7 +8,7 @@ export default function Input(props:{title:string,
 
 }) {
   return (
-    <Box sx={{ justifyContent: 'center', display: 'flex' }}>
+    <Box sx={{ justifyContent: 'center', display: 'flex', marginTop:"10px" }}>
         <TextField
           sx={{ marginRight: '10px' }}
           id="outlined-basic" label="Add todo" variant="outlined"

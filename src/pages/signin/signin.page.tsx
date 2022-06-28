@@ -1,34 +1,40 @@
 
-import { Alert, Box, Button, CircularProgress, FormGroup } from '@mui/material';
+import { Alert, Box, Button, CircularProgress, FormGroup, Typography } from '@mui/material';
 import { FastField, Form, Formik } from 'formik';
 import { boolean, object, string } from 'yup';
-import { userLogin, userSignIn } from '../../api/userApi';
-import IUserForm, { UserAuth } from '../../interfaces/user-auth.interface';
+import {  userSignIn } from '../../api/userApi';
+import  { UserAuth } from '../../interfaces/user-auth.interface';
 import { InputField } from '../../components/customField/InputField';
 import { nameRegex, passwordRegex } from '../../constants/constant';
-import { UserContext } from '../../App';
-import { useContext, useState } from 'react';
+
+import { useContext, useEffect, useState } from 'react';
 import IUser from '../../features/user/user.interface';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { RootState } from '../../app/store';
-import { selectUserLoadingState } from '../../features/user/user.slice';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function SignIn() {
   const dispatch = useAppDispatch();
   const userState = useAppSelector((state: RootState)=> state.user);
-  const initialValues: Partial<IUserForm> = {
+
+  const initialValues: UserAuth = {
     username: '',
     password: ''
   }
   const validationSchema = object().shape({
-    username: string().required('This field is required').matches(nameRegex, "User name must contain at least 8 characters, maximum 20 characters, include one underscore(_), dot(.), space( )"),
-    password: string().required('This field is required').matches(passwordRegex, "Password must contain at least 8 characters, maximum 20 characters, one uppercase, one number and one special case character")
+    username: string().required('This field is required').matches(nameRegex, "User name at 8-20 characters."),
+    password: string().required('This field is required').matches(passwordRegex, "Password must contain at least 8-20 characters.")
   });
-  const handleSubmit = async (user: UserAuth) => {
+  const handleSubmit = async (user: UserAuth, err:any) => {
     dispatch(userSignIn(user));
+    
   }
   return (
-    <Box sx={{width: "80%", margin:"auto"}}>
+    <Box sx={{margin: '5rem auto auto', maxWidth: '380px',
+    border:'solid 1px', borderRadius: '5px', padding:'24px'}}>
+      <Typography variant="h1" component="h2" sx={{padding: '8px',textAlign:'center',fontWeight:'bold', fontSize:'2rem', margin: 'auto'}}>
+  SIGN IN
+</Typography>
       <Formik initialValues={initialValues}
       onSubmit={handleSubmit}
       validationSchema={validationSchema}
@@ -60,6 +66,7 @@ export default function SignIn() {
         }
       }
     </Formik>
+    <Typography sx={{paddingTop: '16px'}}>Don't have an account? <Link to="/signup">Sign Up</Link></Typography>
     </Box>
   );
 }

@@ -1,6 +1,6 @@
 import { Alert, FormGroup, TextField } from "@mui/material";
 import { ErrorMessage, FormikValues } from "formik";
-const ErrorComponent = (props:{err:string})=><Alert severity="error">{props.err}</Alert>;
+const ErrorComponent = (props:{err:string})=><Alert sx={{marginBottom:'8px', marginTop:'-8px'}} severity="error">{props.err}</Alert>;
 export const InputField = (props: FormikValues) => {
     const { form, field, type, label, placeholder, disabled } = props;
     const { name, value, onChange, onBlur } = field;

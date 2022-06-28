@@ -31,4 +31,16 @@ export const userSignUp = createAsyncThunk(
       return jsonData;
     }
   );
+
+  export const userInit = createAsyncThunk(
+    'user/init',
+    async (data, { rejectWithValue }) => {
+      const response = await axiosClient.get("/auth");
+      const jsonData = await response.data;
+      if (response.status < 200 || response.status >= 300) {
+        return rejectWithValue(jsonData);
+      }
+      return jsonData;
+    }
+  );
 //TODO: update user

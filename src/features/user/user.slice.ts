@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import User from './user.interface';
 import type { RootState } from '../../app/store';
-import { userSignIn, userSignUp } from '../../api/userApi';
+import { userInit, userSignIn, userSignUp } from '../../api/userApi';
 
 export interface UserState {
 	currentUser: User | null,
@@ -48,10 +48,27 @@ export const userSlice = createSlice({
         
         builder.addCase(userSignIn.fulfilled, (state, action) => {
         state.isLoading = false;
+		console.log(action.payload);
         state.currentUser = action.payload as User;
         });
     
         builder.addCase(userSignIn.rejected, (state, action) => {
+        state.isLoading = false;
+        state.errMessage = action.payload as string;
+        });
+
+		////signin handle
+		builder.addCase(userInit.pending, (state) => {
+            state.isLoading = true;
+            });
+        
+        builder.addCase(userInit.fulfilled, (state, action) => {
+        state.isLoading = false;
+		console.log(action.payload);
+        state.currentUser = action.payload as User;
+        });
+    
+        builder.addCase(userInit.rejected, (state, action) => {
         state.isLoading = false;
         state.errMessage = action.payload as string;
         });

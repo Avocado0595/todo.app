@@ -1,17 +1,18 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import { Alert, Button, CircularProgress, Container, FormGroup } from '@mui/material';
+import { Alert, Button, CircularProgress, Container, FormGroup, Typography } from '@mui/material';
 import { FastField, Form, Formik, FormikValues } from 'formik';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { object, string, ref } from 'yup';
 import IUser from '../../features/user/user.interface';
-import { userLogin, userSignUp } from '../../api/userApi';
+import {  userSignUp } from '../../api/userApi';
 import {UserSignUp} from '../../interfaces/user-auth.interface';
 import { InputField } from '../../components/customField/InputField';
 import { nameRegex, passwordRegex,emailRegex } from '../../constants/constant';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { RootState } from '../../app/store';
+import { Link } from 'react-router-dom';
 
 export default function SignUp() {
     const initialValues: UserSignUp = {
@@ -23,10 +24,10 @@ export default function SignUp() {
     const validationSchema = object().shape({
         username: string().required('User name is required.')
             .matches(nameRegex,
-                "User name must contain at least 8 characters, maximum 20 characters, include one underscore(_), dot(.), space( )"),
+                "User name at 8-20 characters."),
         password: string().required('Password is required.')
             .matches(passwordRegex,
-                "Password must contain at least 8 characters, maximum 20 characters, one uppercase, one number and one special case character"),
+                "Password must contain 8-20 characters."),
         email: string().required('Email is required.')
                 .matches(emailRegex, "Invalid email."),
         confirmpassword: string().required('This field is required')
@@ -42,6 +43,9 @@ export default function SignUp() {
     return (
         <Box sx={{margin: '5rem auto auto', maxWidth: '380px',
          border:'solid 1px', borderRadius: '5px', padding:'24px'}}>
+            <Typography variant="h1" component="h2" sx={{padding: '8px',textAlign:'center',fontWeight:'bold', fontSize:'2rem', margin: 'auto'}}>
+  SIGN UP
+</Typography>
             <Formik initialValues={initialValues}
             onSubmit={handleSubmit}
             validationSchema={validationSchema}
@@ -87,6 +91,7 @@ export default function SignUp() {
                 }
             }
         </Formik>
+        <Typography sx={{paddingTop: '16px'}}>Already have an account? <Link to="/signin">Sign In</Link></Typography>
         </Box>
         
 

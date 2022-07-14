@@ -1,12 +1,7 @@
-import axios, { AxiosRequestConfig } from 'axios';
+import axios, { AxiosError } from 'axios';
 import queryString from 'query-string';
 const REACT_APP_API_URL = "http://localhost:5001/api";
 
-// const getToken = ()=>{
-//     const hasToken = localStorage.getItem('todoToken');
-//     if (!hasToken) return null;
-//     return hasToken;
-// }
 const axiosClient = axios.create({
     baseURL: REACT_APP_API_URL,
     headers: {
@@ -15,21 +10,11 @@ const axiosClient = axios.create({
     paramsSerializer: params => queryString.stringify(params),
 });
 axiosClient.defaults.withCredentials= true;
-// axiosClient.interceptors.request.use((config:AxiosRequestConfig)=>{
-//     const token = getToken();
-//     if(token)
-//         config.headers={Authorization: `${token}`};
-// return config;
-// })
+
 
 axiosClient.interceptors.response.use((response)=>{
-    if (response && response.data){
-        return response.data;
-    }
-    return response;
-},
-(error)=>{
-    throw error;
-})
+    return response.data;
+},(err)=>{
+    throw new Error(err)});
 
 export default axiosClient;

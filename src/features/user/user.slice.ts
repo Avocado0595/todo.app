@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import User from './user.interface';
 import type { RootState } from '../../app/store';
-import { userInit, userSignIn, userSignUp } from '../../api/userApi';
+import { userInit, userSignIn, userSignOut, userSignUp } from './user.api';
 
 export interface UserState {
 	currentUser: User | null,
@@ -26,7 +26,7 @@ export const userSlice = createSlice({
 		},
 	},
 	extraReducers: (builder) => {
-        //signup handle
+        //
 		builder.addCase(userSignUp.pending, (state) => {
 		state.isLoading = true;
 		});
@@ -35,7 +35,7 @@ export const userSlice = createSlice({
 		state.isLoading = false;
 		state.currentUser = action.payload as User;
 		});
-
+		//
 		builder.addCase(userSignUp.rejected, (state, action) => {
 		state.isLoading = false;
 		state.errMessage = action.payload as string;
@@ -64,11 +64,25 @@ export const userSlice = createSlice({
         
         builder.addCase(userInit.fulfilled, (state, action) => {
         state.isLoading = false;
-		console.log(action.payload);
         state.currentUser = action.payload as User;
         });
     
         builder.addCase(userInit.rejected, (state, action) => {
+        state.isLoading = false;
+        state.errMessage = action.payload as string;
+        });
+
+		////signout handle
+		builder.addCase(userSignOut.pending, (state) => {
+            state.isLoading = true;
+            });
+        
+        builder.addCase(userSignOut.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.currentUser = null;
+        });
+    
+        builder.addCase(userSignOut.rejected, (state, action) => {
         state.isLoading = false;
         state.errMessage = action.payload as string;
         });

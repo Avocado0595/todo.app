@@ -1,4 +1,5 @@
 import { combineReducers } from '@reduxjs/toolkit';
+import taskSlice from '../features/task/task.slice';
 import userSlice from '../features/user/user.slice';
 // const persistConfig = {
 // 	key: 'root',
@@ -9,6 +10,7 @@ import userSlice from '../features/user/user.slice';
 
 const rootReducer = combineReducers({
 	user: userSlice,
+	task: taskSlice
 });
 
 export default rootReducer;

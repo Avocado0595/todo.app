@@ -1,6 +1,6 @@
 import { Divider, List } from '@mui/material'
 import  { Fragment, useEffect, useState } from 'react'
-import ITodo from '../../interfaces/ITodo'
+import ITodo from '../../features/task/task.interface'
 import TodoItem from '../todo-item/TodoItem'
 
 export default function TodoList(props: {

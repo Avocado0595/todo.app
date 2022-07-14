@@ -2,7 +2,7 @@
 import { Alert, Box, Button, CircularProgress, FormGroup, Typography } from '@mui/material';
 import { FastField, Form, Formik } from 'formik';
 import { boolean, object, string } from 'yup';
-import {  userSignIn } from '../../api/userApi';
+import {  userSignIn } from '../../features/user/user.api';
 import  { UserAuth } from '../../interfaces/user-auth.interface';
 import { InputField } from '../../components/customField/InputField';
 import { nameRegex, passwordRegex } from '../../constants/constant';
@@ -12,6 +12,7 @@ import IUser from '../../features/user/user.interface';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { RootState } from '../../app/store';
 import { Link, useNavigate } from 'react-router-dom';
+
 
 export default function SignIn() {
   const dispatch = useAppDispatch();
@@ -27,7 +28,6 @@ export default function SignIn() {
   });
   const handleSubmit = async (user: UserAuth, err:any) => {
     dispatch(userSignIn(user));
-    
   }
   return (
     <Box sx={{margin: '5rem auto auto', maxWidth: '380px',
@@ -44,7 +44,7 @@ export default function SignIn() {
           const {isSubmitting} = formikProps;
           return (
             <Form> 
-              {userState.errMessage?<Alert severity="error">{userState.errMessage}</Alert>:null}
+              {userState.errMessage?<Alert sx={{marginBottom: '12px'}} severity="error">{userState.errMessage}</Alert>:null}
               <FastField
                 name="username"
                 component={InputField}

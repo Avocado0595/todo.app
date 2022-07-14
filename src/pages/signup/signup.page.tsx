@@ -6,7 +6,7 @@ import { FastField, Form, Formik, FormikValues } from 'formik';
 import { useEffect, useState } from 'react';
 import { object, string, ref } from 'yup';
 import IUser from '../../features/user/user.interface';
-import {  userSignUp } from '../../api/userApi';
+import {  userSignUp } from '../../features/user/user.api';
 import {UserSignUp} from '../../interfaces/user-auth.interface';
 import { InputField } from '../../components/customField/InputField';
 import { nameRegex, passwordRegex,emailRegex } from '../../constants/constant';
@@ -33,8 +33,7 @@ export default function SignUp() {
         confirmpassword: string().required('This field is required')
             .oneOf([ref('password'), null], 'Passwords must match')
     });
-    const [errorMessSignUp, setErrorMessSignUp] = useState<string|null>(null);
-    const [isWaiting,setIsWaiting] = useState<boolean>(false);
+    
     const dispatch = useAppDispatch();
     const userState = useAppSelector((state: RootState)=>state.user);
     const handleSubmit = async (user: UserSignUp) => {
@@ -55,7 +54,7 @@ export default function SignUp() {
                     const {isSubmitting} = formikProps;
                     return (
                         <Form>
-                            {errorMessSignUp?<Alert severity="error">{errorMessSignUp}</Alert>:null}
+                            {userState.errMessage?<Alert severity="error">{userState.errMessage}</Alert>:null}
                             <FastField
                                 name="username"
                                 component={InputField}

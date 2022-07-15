@@ -23,7 +23,6 @@ import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import { ThemeProvider } from "@emotion/react";
 import theme from "../../app/theme";
 const Search = styled("div")(({ theme }) => ({
-  
   position: "relative",
   color: theme.palette.mode,
   borderRadius: theme.shape.borderRadius,
@@ -63,7 +62,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     width: '0px',
     '&:focus': {
       width: 'auto',
-      flex:1,
+      flex:1
     },
     [theme.breakpoints.up('sm')]: {
       

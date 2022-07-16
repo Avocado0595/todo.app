@@ -55,6 +55,7 @@ const SearchIconWrapper = styled("div")(({ theme }) => ({
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: 'inherit',
+  with:'100%',
   "& .MuiInputBase-input": {
     padding: theme.spacing(1, 1, 1, 0),
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
@@ -93,8 +94,6 @@ function Header() {
   };
   return (
  <ThemeProvider theme={theme}>
-
-
       <AppBar position="fixed">
         <Toolbar sx={{ justifyContent: "space-between" }}>
           <Typography variant="h1">
@@ -115,13 +114,16 @@ function Header() {
               direction="row"
               sx={{ alignItems: "center", padding: "0 8px" }}
             >
+              <IconButton>
               <NotificationsActiveIcon color="disabled" />
+
+              </IconButton>
             </Stack>
             <Stack
               sx={{ alignItems: "center", marginRight: "0" }}
               direction="row"
             >
-              <Typography sx={{display:{sm:'none', xs:'none', md:'block'}}} color="black" align="center">
+              <Typography sx={{display:{sm:'none', xs:'none', md:'block'}}} color="inherit" align="center">
                 {currentUser?.username} thanh xuan
               </Typography>
               <IconButton
@@ -132,7 +134,7 @@ function Header() {
                 onClick={handleMenu}
                 color="inherit"
               >
-                <AccountCircle color="info" fontSize="large" />
+                <AccountCircle color="inherit" fontSize="large" />
               </IconButton>
             </Stack>
 

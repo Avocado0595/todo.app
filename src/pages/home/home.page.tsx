@@ -78,156 +78,187 @@
 //   )
 // }
 
-
-import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
-import AccountCircle from '@mui/icons-material/AccountCircle';
-import Switch from '@mui/material/Switch';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormGroup from '@mui/material/FormGroup';
-import MenuItem from '@mui/material/MenuItem';
-import Menu from '@mui/material/Menu';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { RootState } from '../../app/store';
-import { selectCurrentUser } from '../../features/user/user.slice';
-import { createTheme, CssBaseline, Divider, Drawer, Grid, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Paper, Stack, styled, ThemeProvider } from '@mui/material';
-import { userSignOut } from '../../features/user/user.api';
-import Header from '../../components/header/header.component';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
-import SideMenu from '../../components/side-menu/sidemenu.component';
-import { darkTheme } from '../../app/mode';
-import { useState } from 'react';
-import HomeIcon from '@mui/icons-material/Home';
-import LeaderboardIcon from '@mui/icons-material/Leaderboard';
-import FolderSharedIcon from '@mui/icons-material/FolderShared';
-import ChatIcon from '@mui/icons-material/Chat';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import WestIcon from '@mui/icons-material/West';
+import * as React from "react";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
+import MenuIcon from "@mui/icons-material/Menu";
+import AccountCircle from "@mui/icons-material/AccountCircle";
+import Switch from "@mui/material/Switch";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormGroup from "@mui/material/FormGroup";
+import MenuItem from "@mui/material/MenuItem";
+import Menu from "@mui/material/Menu";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { RootState } from "../../app/store";
+import { selectCurrentUser } from "../../features/user/user.slice";
+import {
+  Collapse,
+  createTheme,
+  CssBaseline,
+  Divider,
+  Drawer,
+  Grid,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Paper,
+  Slide,
+  Stack,
+  styled,
+  ThemeProvider,
+} from "@mui/material";
+import { userSignOut } from "../../features/user/user.api";
+import Header from "../../components/header/header.component";
+import InboxIcon from "@mui/icons-material/MoveToInbox";
+import MailIcon from "@mui/icons-material/Mail";
+import SideMenu from "../../components/side-menu/sidemenu.component";
+import { darkTheme } from "../../app/mode";
+import { useState } from "react";
+import HomeIcon from "@mui/icons-material/Home";
+import LeaderboardIcon from "@mui/icons-material/Leaderboard";
+import FolderSharedIcon from "@mui/icons-material/FolderShared";
+import ChatIcon from "@mui/icons-material/Chat";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import WestIcon from "@mui/icons-material/West";
 const drawerWidth = 240;
 const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
   ...theme.typography.body2,
   padding: theme.spacing(1),
-  textAlign: 'center',
+  textAlign: "center",
   color: theme.palette.text.secondary,
 }));
 export default function MenuAppBar() {
-  const [mobileState, setMobileState] = useState<Boolean>(false);
+  const [drawerState, setDrawerState] = useState<Boolean>(false);
   const handleDrawerToggle = () => {
-    setMobileState(!mobileState);
+    setDrawerState(!drawerState);
   };
 
   const drawer = (
     <div>
-      <Toolbar/>
+      <Toolbar />
       <Divider />
       <Toolbar>
         <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: 'block' }}
-          >
-            <WestIcon/>
-          </IconButton>
-        </Toolbar>
-      
+          color="inherit"
+          aria-label="open drawer"
+          edge="start"
+          onClick={handleDrawerToggle}
+          sx={{ mr: 2, display: "block" }}
+        >
+          <WestIcon />
+        </IconButton>
+      </Toolbar>
+
       <List>
-        {[{text:'Overview', icon: <HomeIcon/> },{text: 'Stat', icon: <LeaderboardIcon/>},
-        {text:'Project', icon: <FolderSharedIcon/>},
-      {text:'Chat',icon:<ChatIcon/>},
-    {text:'Calendar', icon: <CalendarMonthIcon/>}].map((menuItem, index) => (
+        {[
+          { text: "Overview", icon: <HomeIcon /> },
+          { text: "Stat", icon: <LeaderboardIcon /> },
+          { text: "Project", icon: <FolderSharedIcon /> },
+          { text: "Chat", icon: <ChatIcon /> },
+          { text: "Calendar", icon: <CalendarMonthIcon /> },
+        ].map((menuItem) => (
           <ListItem key={menuItem.text} disablePadding>
             <ListItemButton>
-              <ListItemIcon>
-                {menuItem.icon}
-              </ListItemIcon>
+              <ListItemIcon>{menuItem.icon}</ListItemIcon>
               <ListItemText primary={menuItem.text} />
             </ListItemButton>
           </ListItem>
         ))}
       </List>
-      
     </div>
   );
   return (
     <ThemeProvider theme={darkTheme}>
-      <Box sx={{ display: 'flex' }}>
-        <Header/>
-      <Box
-        component="nav"
-        sx={{ width: { sm: `${mobileState?0:drawerWidth}` }, flexShrink: { sm: 0 } }}
-        aria-label="mailbox folders"
-      >
-        <Drawer
-          
-          variant="temporary"
-          open={mobileState?true:false}
-          onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true,
-          }}
+      <Box sx={{ display: "flex" }}>
+        <Header />
+        <Box
+          component="nav"
           sx={{
-            
-            position:'unset',
-            display: { xs: 'block', sm: 'none' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+            width: { sm: `${drawerState ? 0 : drawerWidth}` },
+            flexShrink: { sm: 0 },
           }}
+          aria-label="mailbox folders"
         >
-          {drawer}
-        </Drawer>
-        <Drawer
-          
-          variant="permanent"
-          sx={{
-            height:'100%',
-            display: { xs: 'none', sm: `${mobileState?'none':'block'}` },
-            '& .MuiDrawer-paper': { position: {sm:'fixed',md:'unset'}, boxSizing: 'border-box', width: drawerWidth },
-          }}
-          open
-        >
-          
-          {drawer}
-        </Drawer>
-      </Box>
-      <Box
-        component="main"
-        sx={{ flexGrow: 1, p: 3, width: `calc(100% - ${drawerWidth}px)` }}
-      >
-        
-        <Toolbar />
-        <Toolbar>
-        <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: {sm:'block', md: `${mobileState?'block':'none'}`} }}
+          <Drawer
+            variant="temporary"
+            open={drawerState ? true : false}
+            onClose={handleDrawerToggle}
+            ModalProps={{
+              keepMounted: true,
+            }}
+            sx={{
+              position: "unset",
+              display: { xs: "block", sm: "none" },
+              "& .MuiDrawer-paper": {
+                boxSizing: "border-box",
+                width: drawerWidth,
+              },
+            }}
           >
-            <MenuIcon />
-          </IconButton>
-        <h2>Title</h2>
-        </Toolbar>
-        <Grid container spacing={3}>
-  <Grid item xs>
-    <Item>xs</Item>
-  </Grid>
-  <Grid item xs>
-    <Item>xs</Item>
-  </Grid>
-  <Grid item xs>
-    <Item>xs</Item>
-  </Grid>
-</Grid>
+            {drawer}
+          </Drawer>
+          <Slide direction="right" in={!drawerState} mountOnEnter unmountOnExit>
+            <Drawer
+              variant="permanent"
+              sx={{
+                display: { xs: "none", sm: `${drawerState?'none':'block'}` },
+                "& .MuiDrawer-paper": {
+                  position: { md: "unset" },
+                  boxSizing: "border-box",
+                  width: drawerWidth,
+                },
+              }}
+              open
+            >
+              {drawer}
+            </Drawer>
+          </Slide>
+        </Box>
+        
+        <Box
+          component="main"
+          sx={{  p: 3, width: '100%'}}
+        >
+          <Toolbar />
+          <Toolbar>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              edge="start"
+              onClick={handleDrawerToggle}
+              sx={{
+                mr: 2,
+                display: {
+                  sm: "block",
+                  md: `${drawerState ? "block" : "none"}`,
+                },
+              }}
+            >
+              <MenuIcon />
+            </IconButton>
+            <h2>Title</h2>
+          </Toolbar>
+          <Grid container spacing={3}>
+            <Grid item xs>
+              <Item>xs</Item>
+            </Grid>
+            <Grid item xs>
+              <Item>xs</Item>
+            </Grid>
+            <Grid item xs>
+              <Item>xs</Item>
+            </Grid>
+          </Grid>
+        </Box>
+      
+        
       </Box>
-    </Box>
     </ThemeProvider>
   );
 }

@@ -1,5 +1,6 @@
 import axios, { AxiosError } from 'axios';
 import queryString from 'query-string';
+import { IResponse } from '../interfaces/IResponse';
 const REACT_APP_API_URL = "http://localhost:5001/api";
 
 const axiosClient = axios.create({
@@ -15,6 +16,6 @@ axiosClient.defaults.withCredentials= true;
 axiosClient.interceptors.response.use((response)=>{
     return response.data;
 },(err)=>{
-    throw new Error(err)});
+    throw new Error(err.response.data.message)});
 
 export default axiosClient;

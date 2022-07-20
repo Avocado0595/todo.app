@@ -54,7 +54,7 @@ export default function SignUp() {
                     const {isSubmitting} = formikProps;
                     return (
                         <Form>
-                            {userState.errMessage?<Alert severity="error">{userState.errMessage}</Alert>:null}
+                            {userState.errMessage?<Alert sx={{marginBottom: '12px'}} severity="error">{userState.errMessage}</Alert>:null}
                             <FastField
                                 name="username"
                                 component={InputField}

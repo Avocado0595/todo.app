@@ -18,4 +18,19 @@ theme.typography.body1 = {
       fontSize: '1rem',
     },
   };
+theme.typography.fontFamily =[
+        '-apple-system',
+        'BlinkMacSystemFont',
+        '"Poppins"',
+        'sans-serif',
+        '"Segoe UI"',
+        'Roboto',
+        '"Helvetica Neue"',
+        'Arial',
+        
+        '"Apple Color Emoji"',
+        '"Segoe UI Emoji"',
+        '"Segoe UI Symbol"',
+      ].join(',');
+
 export default theme;

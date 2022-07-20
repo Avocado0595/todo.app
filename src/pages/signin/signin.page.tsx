@@ -23,7 +23,7 @@ export default function SignIn() {
     password: ''
   }
   const validationSchema = object().shape({
-    username: string().required('This field is required').matches(nameRegex, "User name at 8-20 characters."),
+    username: string().required('This field is required').matches(nameRegex, "User name must contain 4-20 characters."),
     password: string().required('This field is required').matches(passwordRegex, "Password must contain at least 8-20 characters.")
   });
   const handleSubmit = async (user: UserAuth, err:any) => {
@@ -59,7 +59,7 @@ export default function SignIn() {
                 label="Password"
               /> 
               <FormGroup className="signin-btn-group">
-                <Button type="submit" variant="contained" color="primary">{ (userState.isLoading||isSubmitting)&&<CircularProgress sx={{color:"#0d4d8c"}} />}Login</Button>
+                <Button type="submit" variant="contained" color="primary">{ (userState.isLoading||isSubmitting)&&<CircularProgress size='small' sx={{color:"white"}} />} Login</Button>
               </FormGroup>
             </Form>
           )

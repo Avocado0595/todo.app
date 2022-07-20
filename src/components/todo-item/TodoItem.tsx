@@ -2,7 +2,6 @@ import  { useContext } from 'react'
 import { Box, IconButton, ListItem } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
-import { TodoContext } from '../../App';
 
 export default function TodoItem(props: {
     id: string,

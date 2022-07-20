@@ -39,7 +39,7 @@ export const InputField = (props: FormikValues) => {
                 onMouseDown={handleMouseDownPassword}
                 edge="end"
               >
-                {showPassword ? <VisibilityOff /> : <Visibility />}
+                {showPassword ?  <Visibility /> : <VisibilityOff />}
               </IconButton>
             </InputAdornment>:null
           }

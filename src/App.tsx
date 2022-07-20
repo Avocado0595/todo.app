@@ -2,7 +2,7 @@ import React, { createContext, Suspense, useContext, useEffect, useState } from 
 import './App.css'
 import ITodo from './features/task/task.interface'
 import { Box } from '@mui/system';
-import MenuAppBar from './components/navbar/MenuAppBar';
+import MenuAppBar from './pages/home/components/MenuAppBar';
 import Input from './components/add-input/Input';
 import TodoList from './components/todo-list/TodoList';
 //import { createTodos, getTodos, updateTodos } from './features/task/task.api';
@@ -21,18 +21,20 @@ import SignIn from './pages/signin/signin.page';
 import { RootState } from './app/store';
 import { selectCurrentUser } from './features/user/user.slice';
 import { getTaskList } from './features/task/task.api';
-
+import { ThemeProvider } from '@emotion/react';
+import theme from '../src/app/theme';
 //const GetTodo = React.lazy(() => import("./pages/gettodo"));
 function App() {
-  const currentUser = true;//useAppSelector((state:RootState)=>selectCurrentUser(state));
+  const currentUser = useAppSelector((state:RootState)=>selectCurrentUser(state));
   const dispatch = useAppDispatch();
-  // useEffect(()=>{
-  //   dispatch(userInit());
-  //   dispatch(getTaskList());
-  // },[dispatch])
+  useEffect(()=>{
+    dispatch(userInit());
+    dispatch(getTaskList());
+  },[dispatch])
   
 
   return (
+    <ThemeProvider theme={theme}>
     <Suspense fallback={<h1>loading...</h1>}>
       <BrowserRouter>
         <Routes>
@@ -42,6 +44,8 @@ function App() {
         </Routes>
       </BrowserRouter>
     </Suspense>
+
+    </ThemeProvider>
   
   )
 }

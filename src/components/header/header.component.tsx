@@ -12,7 +12,7 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React,{useState} from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { RootState } from "../../app/store";
 import { userSignOut } from "../../features/user/user.api";
@@ -22,6 +22,7 @@ import InputBase from "@mui/material/InputBase";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import { ThemeProvider } from "@emotion/react";
 import theme from "../../app/theme";
+import ClearIcon from '@mui/icons-material/Clear';
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   color: theme.palette.mode,
@@ -62,7 +63,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     transition: theme.transitions.create("width"),
     width: '0px',
     '&:focus': {
-      width: 'auto',
+      width: '100%',
       flex:1
     },
     [theme.breakpoints.up('sm')]: {
@@ -77,6 +78,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 function Header() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [value, setValue] = useState<string>('');
   const currentUser = useAppSelector((state: RootState) =>
     selectCurrentUser(state)
   );
@@ -92,9 +94,17 @@ function Header() {
   const handleSignout = () => {
     dispatch(userSignOut());
   };
+  const clearValue = ()=>{
+    setValue('');
+  }
   return (
  <ThemeProvider theme={theme}>
-      <AppBar position="fixed">
+      <AppBar
+        position="fixed"
+        sx={{
+          zIndex:1201
+        }}
+      >
         <Toolbar sx={{ justifyContent: "space-between" }}>
           <Typography variant="h1">
             doX
@@ -103,10 +113,14 @@ function Header() {
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
-            <StyledInputBase
+            <StyledInputBase sx={{width: '100%'}}
               placeholder="Search…"
               inputProps={{ "aria-label": "search" }}
+              endAdornment={<IconButton onClick={clearValue} sx={{display: value?'flex':'none'}}><ClearIcon sx={{color:'white'}}/></IconButton>}
+              value={value}
+              onChange={(e)=>setValue(e.target.value)}
             />
+            
           </Search>
 
           <Stack direction="row">
@@ -124,7 +138,7 @@ function Header() {
               direction="row"
             >
               <Typography sx={{display:{sm:'none', xs:'none', md:'block'}}} color="inherit" align="center">
-                {currentUser?.username} thanh xuan
+                {currentUser?.username}
               </Typography>
               <IconButton
                 size="large"
@@ -158,7 +172,7 @@ function Header() {
             </Menu>
           </Stack>
         </Toolbar>
-      </AppBar>
+        </AppBar>
       </ThemeProvider>
   );
 }
